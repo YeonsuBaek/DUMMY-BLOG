@@ -17,7 +17,7 @@ export default function PostList() {
   const [state, setState] = useState<any>(null);
 
   const { data: postList, refetch: refetchPost } = useQuery(
-    [postListUrl],
+    ['postList'],
     getPostList
   );
 
