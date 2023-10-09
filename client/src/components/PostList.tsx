@@ -8,7 +8,6 @@ import {
   getPostDetail,
   getPostList,
   modifyPostDetail,
-  postListUrl,
 } from '@/apis/crud';
 
 export default function PostList() {
@@ -31,10 +30,10 @@ export default function PostList() {
     fetchPostDetail(id);
   };
 
-  const resetState = () => {
+  const resetState = async () => {
+    await refetchPost();
     setState(null);
     setOpenModal(false);
-    refetchPost();
   };
 
   const handleDeletePost = async () => {

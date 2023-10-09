@@ -1,6 +1,6 @@
 export type POST_TYPE = {
   id: number;
-  userId: number;
+  userId: string;
   title: string;
   body: string;
 };
