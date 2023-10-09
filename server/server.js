@@ -21,6 +21,19 @@ app.get('/postList/:id', (req, res) => {
   }
 });
 
+app.get('/postList/user/:filter', (req, res) => {
+  const { filter } = req.params;
+  const post = postList.filter((post) => post.userId === filter);
+
+  if (post.length > 0) {
+    res.json(post);
+  } else if (post.length === 0) {
+    res.json(postList);
+  } else {
+    res.status(404).json({ error: 'No posts found for the specified user' });
+  }
+});
+
 app.delete('/postList/:id', (req, res) => {
   const { id } = req.params;
   const post = postList.find((post) => post.id.toString() === id);

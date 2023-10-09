@@ -6,7 +6,10 @@ const postDetailUrl = (id: number) => `${postListUrl}/${id}`;
 const serverUrl = 'http://localhost:8000/postList';
 const serverDetailUrl = (id: string) => `${serverUrl}/${id}`;
 
-export const getPostList = () => {
+export const getPostList = (filter?: string) => {
+  if (filter) {
+    return fetch(`${serverUrl}/user/${filter}`).then((res) => res.json());
+  }
   return fetch(serverUrl).then((res) => res.json());
 };
 

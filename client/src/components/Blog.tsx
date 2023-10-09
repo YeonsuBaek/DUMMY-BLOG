@@ -16,11 +16,14 @@ export default function Blog() {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [post, setPost] = useState<POST_TYPE | null>(null);
   const [state, setState] = useState<any>(null);
+  const [filter, setFilter] = useState<string>('');
 
-  const { data: postList, refetch: refetchPost } = useQuery(
-    ['postList'],
-    getPostList
-  );
+  const {
+    data: postList,
+    refetch: refetchPost,
+    isLoading,
+    isError,
+  } = useQuery(['postList', filter], () => getPostList(filter));
 
   const handleFetchPost = (id: number) => {
     const fetchPostDetail = async (id: number) => {
@@ -54,12 +57,24 @@ export default function Blog() {
     }
   };
 
+  const handleChangeFilter = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFilter(value);
+  };
+
+  const handleClickFilter = () => {};
+
   return (
     <div className={style.style}>
       <h2>Post List</h2>
       <div>
-        <input type='text' placeholder='Type something...' />
-        <button type='button'>
+        <input
+          type='text'
+          placeholder='Type writer'
+          value={filter}
+          onChange={handleChangeFilter}
+        />
+        <button type='button' onClick={handleClickFilter}>
           <BiSearch size='24' />
         </button>
       </div>
@@ -68,7 +83,11 @@ export default function Blog() {
           <span>Title</span>
           <span>Writer</span>
         </li>
-        <PostList postList={postList} onFetchPost={handleFetchPost} />
+        {isLoading && <div>Loading..</div>}
+        {isError && <div>Sorry, can't get posts</div>}
+        {postList && (
+          <PostList postList={postList} onFetchPost={handleFetchPost} />
+        )}
       </ul>
       {openModal && post && (
         <Modal
